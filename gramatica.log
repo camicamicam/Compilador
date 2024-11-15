@@ -1,0 +1,19 @@
+namespace = ST
+: = ST
+Cplusplus = SNT
+; = ST
+Programa = SNT
+-> = Flecha
+Librerias = SNT
+Main = SNT
+\; = FinProduccion
+Librerias = SNT
+-> = Flecha
+# = ST
+include = ST
+< = ST
+Identificador = Tipo
+> = ST
+\( = Izquierdo
+Librerias = SNT
+Error: Sintaxis: se espera un Derecho (Librerias) en la línea 3
