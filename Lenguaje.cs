@@ -12,6 +12,7 @@ using System.Threading.Tasks;
     3. Implementar el operador OR(si es or solo or)
     4. Indentar el código (control de tabuladores o espacios)
     Solo el ultimo token puede ser SNT
+    commit github
 */
 
 namespace Compilador
