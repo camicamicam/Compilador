@@ -19,6 +19,7 @@ namespace Compilador
 {
     public class Lenguaje : Sintaxis
     {
+        private bool primeraProduccion = true;
         public Lenguaje()
         {
 
@@ -65,7 +66,15 @@ namespace Compilador
         {
             if (Clasificacion == Tipos.SNT)
             {
-                lenguajecs.WriteLine("        public void " + Contenido + "()");
+                if (primeraProduccion)
+                {
+                    lenguajecs.WriteLine("        public void " + Contenido + "()");
+                    primeraProduccion = false;
+                }
+                else
+                {
+                    lenguajecs.WriteLine("        private void " + Contenido + "()");
+                }
                 lenguajecs.WriteLine("        {");
             }
             match(Tipos.SNT);
@@ -100,7 +109,7 @@ namespace Compilador
             {
                 match(Tipos.Izquierdo);
                 lenguajecs.Write("              if(");
-                
+
                 if (Clasificacion == Tipos.ST)
                 {
                     lenguajecs.WriteLine("Contenido == \"" + Contenido + "\")");
@@ -115,15 +124,57 @@ namespace Compilador
                     lenguajecs.WriteLine("                  match(Tipos." + Contenido + "\");");
                     match(Tipos.Tipo);
                 }
-                
+                else if (Clasificacion == Tipos.SNT)
+                {
+                    lenguajecs.WriteLine("Contenido == \"{\")");
+                    lenguajecs.WriteLine("              {");
+                    lenguajecs.WriteLine("                  " + Contenido + "();");
+                    match(Tipos.SNT);
+                }
+                if (Clasificacion == Tipos.Or)
+                {
+                    produccionOr();
+                }
                 match(Tipos.Derecho);
                 lenguajecs.WriteLine("              }");
+                match(Tipos.Epsilon);
 
             }
             if (Clasificacion != Tipos.FinProduccion)
             {
                 conjuntoTokens();
             }
+        }
+
+        private void produccionOr(){
+            lenguajecs.WriteLine("              }");
+            match(Tipos.Or);
+            lenguajecs.WriteLine("              else if(");
+            if (Clasificacion == Tipos.ST)
+                {
+                    lenguajecs.WriteLine("Contenido == \"" + Contenido + "\")");
+                    lenguajecs.WriteLine("              {");
+                    lenguajecs.WriteLine("                  match(\"" + Contenido + "\");");
+                    match(Tipos.ST);
+                }
+                else if (Clasificacion == Tipos.Tipo)
+                {
+                    lenguajecs.WriteLine("Clasificacion == Tipos." + Contenido + "\")");
+                    lenguajecs.WriteLine("              {");
+                    lenguajecs.WriteLine("                  match(Tipos." + Contenido + "\");");
+                    match(Tipos.Tipo);
+                }
+                else if (Clasificacion == Tipos.SNT)
+                {
+                    lenguajecs.WriteLine("Contenido == \"{\")");
+                    lenguajecs.WriteLine("              {");
+                    lenguajecs.WriteLine("                  " + Contenido + "();");
+                    match(Tipos.SNT);
+                }
+                if (Clasificacion == Tipos.Or)
+                {
+                    produccionOr();
+                }
         }
     }
 

@@ -21,11 +21,32 @@ namespace Cplusplus
               Librerias();
               Main();
         }
-        public void Librerias()
+        private void Librerias()
         {
               match("#");
               match("include");
               match("<");
               match(Tipos.Identificador");
               match(">");
-              if(
+              if(Contenido == "{")
+              {
+                  Main();
+              }
+              else if(Clasificacion == Tipos.Identificador")
+              {
+                  match(Tipos.Identificador");
+              }
+        }
+        private void Main()
+        {
+              match("void");
+              match("main");
+              match("(");
+              match(")");
+              BloqueInstrucciones();
+        }
+        private void BloqueInstrucciones()
+        {
+        }
+      }
+}
