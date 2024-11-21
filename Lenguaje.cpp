@@ -32,9 +32,9 @@ namespace Cplusplus
               {
                   Main();
               }
-              else if(Clasificacion == Tipos.Identificador")
+              else if(Clasificacion == Tipos.Identificador)
               {
-                  match(Tipos.Identificador");
+                  match(Tipos.Identificador);
               }
         }
         private void Main()
