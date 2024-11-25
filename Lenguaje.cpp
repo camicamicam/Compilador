@@ -6,7 +6,7 @@ using System.Reflection.Metadata.Ecma335;
 using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 
-namespace Cplusplus
+namespace Lenguaje
 {
     public class Lenguaje : Sintaxis
     {
@@ -18,35 +18,13 @@ namespace Cplusplus
         }
         public void Programa()
         {
-              Librerias();
-              Main();
+              A();
+              match("b");
+              C();
         }
-        private void Librerias()
+        private void A()
         {
-              match("#");
-              match("include");
-              match("<");
-              match(Tipos.Identificador");
-              match(">");
-              if(Contenido == "{")
+              C();
+              if(Clasificacion == Tipos.Numero")
               {
-                  Main();
-              }
-              else if(Clasificacion == Tipos.Identificador)
-              {
-                  match(Tipos.Identificador);
-              }
-        }
-        private void Main()
-        {
-              match("void");
-              match("main");
-              match("(");
-              match(")");
-              BloqueInstrucciones();
-        }
-        private void BloqueInstrucciones()
-        {
-        }
-      }
-}
+                  match(Tipos.Numero");

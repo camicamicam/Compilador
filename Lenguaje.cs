@@ -20,14 +20,14 @@ namespace Compilador
     public class Lenguaje : Sintaxis
     {
         private bool primeraProduccion = true;
-        private List<String> listaParentesis;
+        private List<string> listaParentesis;
         public Lenguaje()
         {
-
+            listaParentesis = new List<string>();
         }
         public Lenguaje(string nombre) : base(nombre)
         {
-
+            listaParentesis = new List<string>();
         }
 
         private void esqueleto(string nspace)
@@ -129,13 +129,16 @@ namespace Compilador
                 {
                     listaproduccion();
                 }
-                    match(Tipos.Derecho);
-                    if (Clasificacion == Tipos.Epsilon)
-                    {
+                match(Tipos.Derecho);
+
+                    if(Clasificacion!=Tipos.Epsilon){
+                        throw new Error("Falta un epsilon al final en la linea ",log,linea);
+                    }
+                    else{
                         match(Tipos.Epsilon);
                         Epsilonproduccion();
                     }
-                    lenguajecs.WriteLine("              }");
+                lenguajecs.WriteLine("              }");
             }
             if (Clasificacion != Tipos.FinProduccion)
             {
@@ -146,31 +149,90 @@ namespace Compilador
         private void listaproduccion()
         {
             listaParentesis.Add(Contenido);
-            match(Contenido);
+            if (Clasificacion == Tipos.SNT)
+            {
+                match(Tipos.SNT);
+            }
+            else if (Clasificacion == Tipos.ST)
+            {
+                match(Tipos.ST);
+            }
+            else if (Clasificacion == Tipos.Tipo)
+            {
+                match(Tipos.Tipo);
+            }
             if (Clasificacion != Tipos.Derecho)
             {
                 listaproduccion();
             }
         }
 
+        private Token.Tipos buscarTipo(string contenido)
+        {
+            Token.Tipos tipo;
+            if (EsTipo(contenido))
+            {
+                tipo = Tipos.Tipo;
+            }
+            else if (char.IsUpper(contenido[0]) )
+            {
+                tipo = Tipos.SNT;
+            }
+            else
+            {
+                tipo = Tipos.ST;
+            }
+            return tipo;
+        }
+        private bool EsTipo(string contenido)
+        {
+            switch(contenido)
+            {
+                case "Identificador":
+                case "Numero":
+                case "FinSentencia":
+                case "OpTermino" :
+                case "OpFactor" :
+                case "OpLogico" :
+                case "OpRelacional" :
+                case "OpTernario" :
+                case "Asignacion" :
+                case "IncTermino" :
+                case "IncFactor" :
+                case "Cadena" :
+                case "Inicio" :
+                case "Fin" :
+                case "Caracter" :
+                case "TipoDato" :
+                case "Ciclo": 
+                case "Condicion" : return true;
+            }
+            return false;
+            
+        } 
+
         private void Epsilonproduccion()
         {
-            
-            if (Clasificacion == Tipos.SNT)
+
+            for (int i = 0; i < listaParentesis.Count; i++)
             {
-                lenguajecs.WriteLine("              " + Contenido + "();");
-                match(Tipos.SNT);
+
+                Token.Tipos tipoLista = buscarTipo(listaParentesis[i]);
+                if (tipoLista == Tipos.SNT)
+                {
+                    lenguajecs.WriteLine("                  " + listaParentesis[i] + "();");
+                }
+                else if (tipoLista == Tipos.ST)
+                {
+                    lenguajecs.WriteLine("                  match(\"" + listaParentesis[i] + "\");");
+                }
+                else if (tipoLista == Tipos.Tipo)
+                {
+                    lenguajecs.WriteLine("                  match(Tipos." + listaParentesis[i] + "\");");
+                }
+
             }
-            else if (Clasificacion == Tipos.ST)
-            {
-                lenguajecs.WriteLine("              match(\"" + Contenido + "\");");
-                match(Tipos.ST);
-            }
-            else if (Clasificacion == Tipos.Tipo)
-            {
-                lenguajecs.WriteLine("              match(Tipos." + Contenido + "\");");
-                match(Tipos.Tipo);
-            }
+
         }
         /*private void produccionOr(){
             lenguajecs.WriteLine("              }");
