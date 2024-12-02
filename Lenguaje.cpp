@@ -51,16 +51,5 @@ namespace Lenguaje
     }
     private void D()
     {
-        match("using");
-        match("b");
-    }
-    private void E()
-    {
-        if(Contenido == "using")
-        {
-            D();
-            match("a");
-            match("b");
-        }
     }
 }

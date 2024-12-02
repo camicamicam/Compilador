@@ -210,7 +210,6 @@ namespace Compilador
 
         private void listaElementos()
         {
-            Console.WriteLine("Entrando a lista Elementos");
             listaParentesis.Add(Contenido);
             if (Clasificacion == Tipos.SNT)
             {
@@ -229,14 +228,13 @@ namespace Compilador
                 match(Tipos.Or);
             }
             else{
-                Console.WriteLine("Clasificacion no esperada");
+            
                 return;
             }
             if (Clasificacion != Tipos.Derecho)
             {
                 listaElementos();
             }
-            Console.WriteLine("Saliendo de listaElementos");
         }
 
         private void epsilonSNT(String contenido)
