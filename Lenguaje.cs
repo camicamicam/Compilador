@@ -156,14 +156,15 @@ namespace Compilador
                 }
                 else if (Clasificacion == Tipos.Tipo)
                 {
-                    lenguajecs.WriteLine("Clasificacion == Tipos." + Contenido + "\")");
+                    lenguajecs.WriteLine("Clasificacion == Tipos." + Contenido + ")");
                     AbrirLlave();
                     EscribirConIndentacion("match(Tipos." + Contenido + ");");
                     match(Tipos.Tipo);
                 }
                 else if (Clasificacion == Tipos.SNT)
                 {
-                    epsilonSNT();
+                    epsilonSNT(Contenido);
+                    match(Tipos.SNT);
                 }
 
                 if (Clasificacion != Tipos.Derecho)
@@ -196,7 +197,14 @@ namespace Compilador
             }
             if (Clasificacion != Tipos.FinProduccion)
             {
-                conjuntoTokens();
+                if (Clasificacion == Tipos.Flecha)
+                {
+                    throw new Error("Debe acabar una producción con un ; ",log,linea-1);
+                }
+                else
+                {
+                    conjuntoTokens();
+                }
             }
         }
 
@@ -231,32 +239,28 @@ namespace Compilador
             Console.WriteLine("Saliendo de listaElementos");
         }
 
-        private void epsilonSNT()
+        private void epsilonSNT(String contenido)
         {
             var p = listaProducciones.Find(v => v.getNombre() == Contenido);
-            if (p.getNombre() != null)
+            if (p != null)
             {
-                if (p.getPrimerClasificacion() == Tipos.SNT)
-                {
-                    epsilonSNT();
-                }
-                else if (p.getPrimerClasificacion() == Tipos.ST)
+                
+                if (p.getPrimerClasificacion() == Tipos.ST)
                 {
                     lenguajecs.WriteLine("Contenido == \"" + p.getPrimerElemento() + "\")");
                     AbrirLlave();
-                    EscribirConIndentacion("match(\"" + p.getPrimerElemento() + "\");");
+                    EscribirConIndentacion(contenido+"();");
                 }
                 else if (p.getPrimerClasificacion() == Tipos.Tipo)
                 {
                     lenguajecs.WriteLine("Clasificacion == Tipos." + p.getPrimerElemento() + ")");
                     AbrirLlave();
-                    EscribirConIndentacion("match(Tipos." + p.getPrimerElemento() + "\");");
-                }
-                match(Tipos.SNT);
+                    EscribirConIndentacion(contenido+"();");
+                }       
             }
             else
             {
-                throw new Error("No se ha declarado esa produccion ", log, linea);
+                throw new Error("No se ha declarado esa produccion "+contenido+" ", log, linea);
             }
             
         }
@@ -319,11 +323,11 @@ namespace Compilador
                 {
                     if (anteOR)
                     {
-                       epsilonSNT();
+                       epsilonSNT(listaParentesis[i]);
                     }
                     else
                     {
-                       lenguajecs.WriteLine("                  " + listaParentesis[i] + "();"); 
+                       EscribirConIndentacion(listaParentesis[i] + "();"); 
                     }
                 }
                 else if (tipoLista == Tipos.ST)

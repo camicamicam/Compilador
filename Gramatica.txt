@@ -3,4 +3,4 @@ Programa -> A b C \;
 A -> C \( Numero b C D \)\? D \;
 C -> D \( a | b | D \) \;
 D -> using b \;
-E -> \( D a b);
+E -> \( D a b \)\?\;
