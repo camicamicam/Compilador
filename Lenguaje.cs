@@ -11,7 +11,6 @@ using System.Threading.Tasks;
     2. Implementar la cerradura Epsilon (si es epsilon solo epsilon, si no tiene ninguno error de que no hay ?)
     3. Implementar el operador OR(si es or solo or)
     4. Indentar el código (control de tabuladores o espacios)
-    Solo el ultimo token puede ser SNT
     commit github
 */
 
@@ -24,6 +23,9 @@ namespace Compilador
         private List<string> listaParentesis;
         private List<Producciones> listaProducciones;
         private int nivelIndentacion = 0;
+        private string produccionR = "";
+        private int contadorR = 0;
+
         public Lenguaje()
         {
             listaParentesis = new List<string>();
@@ -88,6 +90,7 @@ namespace Compilador
             match(";");
             producciones();
 
+            CerrarLlave();
             CerrarLlave();
         }
 
@@ -163,7 +166,7 @@ namespace Compilador
                 }
                 else if (Clasificacion == Tipos.SNT)
                 {
-                    epsilonSNT(Contenido);
+                    epsilonSNT(Contenido,"");
                     match(Tipos.SNT);
                 }
 
@@ -227,19 +230,19 @@ namespace Compilador
             {
                 match(Tipos.Or);
             }
-            else{
-            
-                return;
-            }
             if (Clasificacion != Tipos.Derecho)
             {
                 listaElementos();
             }
         }
 
-        private void epsilonSNT(String contenido)
+        private void epsilonSNT(string contenido, string pRecursivo)
         {
-            var p = listaProducciones.Find(v => v.getNombre() == Contenido);
+            if (contadorR == 0)
+            {
+                produccionR = contenido;
+            }
+            var p = listaProducciones.Find(p => p.getNombre() == contenido);
             if (p != null)
             {
                 
@@ -247,18 +250,39 @@ namespace Compilador
                 {
                     lenguajecs.WriteLine("Contenido == \"" + p.getPrimerElemento() + "\")");
                     AbrirLlave();
-                    EscribirConIndentacion(contenido+"();");
+                    if (produccionR != "")
+                    {
+                        EscribirConIndentacion(produccionR+"();");
+                        contadorR = 0;
+                    }
+                    else
+                    {
+                        EscribirConIndentacion(contenido+"();");
+                    }
                 }
                 else if (p.getPrimerClasificacion() == Tipos.Tipo)
                 {
                     lenguajecs.WriteLine("Clasificacion == Tipos." + p.getPrimerElemento() + ")");
                     AbrirLlave();
-                    EscribirConIndentacion(contenido+"();");
+                    if (produccionR != "")
+                    {
+                        EscribirConIndentacion(produccionR+"();");
+                        contadorR = 0;
+                    }
+                    else
+                    {
+                        EscribirConIndentacion(contenido+"();");
+                    }
+                }
+                else if (p.getPrimerClasificacion() == Tipos.SNT)
+                {
+                    contadorR++;
+                    epsilonSNT(p.getPrimerElemento(),contenido);
                 }       
             }
             else
             {
-                throw new Error("No se ha declarado esa produccion "+contenido+" ", log, linea);
+                throw new Error("No se declaro o aun no se ha declarado la produccion "+contenido+" ", log, linea);
             }
             
         }
@@ -275,6 +299,10 @@ namespace Compilador
                 tipo = Tipos.Or;
             }
             else if (char.IsLower(contenido[0]))
+            {
+                tipo = Tipos.ST;
+            }
+            else if(EsST(Contenido))
             {
                 tipo = Tipos.ST;
             }
@@ -310,6 +338,20 @@ namespace Compilador
             return false;
 
         }
+        private bool EsST(string contenido)
+        {
+            switch (contenido)
+            {
+                case "!":
+                case "#":
+                case "$":
+                case "%":
+                case "&":
+                case "/": return true;
+            }
+            return false;
+
+        }
 
         private void produccionParentesis()
         {
@@ -321,7 +363,7 @@ namespace Compilador
                 {
                     if (anteOR)
                     {
-                       epsilonSNT(listaParentesis[i]);
+                       epsilonSNT(listaParentesis[i],"");
                     }
                     else
                     {
@@ -360,7 +402,8 @@ namespace Compilador
                         }
                         else
                         {
-                            EscribirConIndentacion("else{");
+                            EscribirConIndentacion("else");
+                            AbrirLlave();
                             anteOR = false;
                         }
                     }
