@@ -8,19 +8,19 @@
     "net8.0": []
   },
   "packageFolders": {
-    "C:\\Users\\mokka\\.nuget\\packages\\": {}
+    "C:\\Users\\beren\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\mokka\\OneDrive\\Imágenes\\Universidad\\Quinto semestre\\LyAII\\proyectos\\Compilador\\Compilador\\Compilador.csproj",
+      "projectUniqueName": "C:\\Users\\beren\\Documents\\ITQ\\Semestre 7\\2.Lenguajes y Autómatas II - Guillermo Fernandez Romero\\Compilador\\Compilador.csproj",
       "projectName": "Compilador",
-      "projectPath": "C:\\Users\\mokka\\OneDrive\\Imágenes\\Universidad\\Quinto semestre\\LyAII\\proyectos\\Compilador\\Compilador\\Compilador.csproj",
-      "packagesPath": "C:\\Users\\mokka\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\mokka\\OneDrive\\Imágenes\\Universidad\\Quinto semestre\\LyAII\\proyectos\\Compilador\\Compilador\\obj\\",
+      "projectPath": "C:\\Users\\beren\\Documents\\ITQ\\Semestre 7\\2.Lenguajes y Autómatas II - Guillermo Fernandez Romero\\Compilador\\Compilador.csproj",
+      "packagesPath": "C:\\Users\\beren\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\beren\\Documents\\ITQ\\Semestre 7\\2.Lenguajes y Autómatas II - Guillermo Fernandez Romero\\Compilador\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\mokka\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\beren\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net8.0"
@@ -64,7 +64,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.206/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

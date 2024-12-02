@@ -23,6 +23,7 @@ namespace Compilador
         private bool hayEpsilon = false;
         private List<string> listaParentesis;
         private List<Producciones> listaProducciones;
+        private int nivelIndentacion = 0;
         public Lenguaje()
         {
             listaParentesis = new List<string>();
@@ -32,6 +33,30 @@ namespace Compilador
         {
             listaParentesis = new List<string>();
             listaProducciones = new List<Producciones>();
+        }
+        private string ObtenerIndentacion()
+        {
+            return new string(' ', nivelIndentacion * 4);
+        }
+
+        private void EscribirConIndentacion(string linea)
+        {
+            lenguajecs.WriteLine(ObtenerIndentacion() + linea);
+        }
+
+        private void AbrirLlave()
+        {
+            
+            lenguajecs.WriteLine(ObtenerIndentacion()+"{");
+            nivelIndentacion++;
+        }
+        private void CerrarLlave()
+        {
+            if(nivelIndentacion > 0)
+                nivelIndentacion--;
+            EscribirConIndentacion("}");   
+            
+            //lenguajecs.WriteLine("}");
         }
 
         private void esqueleto(string nspace)
@@ -44,15 +69,15 @@ namespace Compilador
             lenguajecs.WriteLine("using System.Runtime.InteropServices;");
             lenguajecs.WriteLine("using System.Threading.Tasks;");
             lenguajecs.WriteLine("\nnamespace " + nspace);
-            lenguajecs.WriteLine("{");
-            lenguajecs.WriteLine("    public class Lenguaje : Sintaxis");
-            lenguajecs.WriteLine("    {");
-            lenguajecs.WriteLine("        public Lenguaje()");
-            lenguajecs.WriteLine("        {");
-            lenguajecs.WriteLine("        }");
-            lenguajecs.WriteLine("        public Lenguaje(string nombre) : base(nombre)");
-            lenguajecs.WriteLine("        {");
-            lenguajecs.WriteLine("        }");
+            AbrirLlave();
+            EscribirConIndentacion("public class Lenguaje : Sintaxis");
+            AbrirLlave();
+            EscribirConIndentacion("public Lenguaje()");
+            AbrirLlave();
+            CerrarLlave();
+            EscribirConIndentacion("public Lenguaje(string nombre) : base(nombre)");
+            AbrirLlave();
+            CerrarLlave();
         }
         public void Genera()
         {
@@ -63,8 +88,7 @@ namespace Compilador
             match(";");
             producciones();
 
-            lenguajecs.WriteLine("      }");
-            lenguajecs.WriteLine("}");
+            CerrarLlave();
         }
 
         private void producciones()
@@ -74,14 +98,14 @@ namespace Compilador
             {
                 if (primeraProduccion)
                 {
-                    lenguajecs.WriteLine("        public void " + Contenido + "()");
+                    EscribirConIndentacion("public void " + Contenido + "()");
                     primeraProduccion = false;
                 }
                 else
                 {
-                    lenguajecs.WriteLine("        private void " + Contenido + "()");
+                    EscribirConIndentacion("private void " + Contenido + "()");
                 }
-                lenguajecs.WriteLine("        {");
+                AbrirLlave();
 
             }
             NombreProduccion = Contenido;
@@ -94,7 +118,7 @@ namespace Compilador
 
             conjuntoTokens();
             match(Tipos.FinProduccion);
-            lenguajecs.WriteLine("        }");
+            CerrarLlave();
             if (Clasificacion == Tipos.SNT)
             {
                 producciones();
@@ -105,36 +129,36 @@ namespace Compilador
         {
             if (Clasificacion == Tipos.SNT)
             {
-                lenguajecs.WriteLine("              " + Contenido + "();");
+                EscribirConIndentacion(Contenido + "();");
                 match(Tipos.SNT);
             }
             else if (Clasificacion == Tipos.ST)
             {
-                lenguajecs.WriteLine("              match(\"" + Contenido + "\");");
+                EscribirConIndentacion("match(\"" + Contenido + "\");");
                 match(Tipos.ST);
             }
             else if (Clasificacion == Tipos.Tipo)
             {
-                lenguajecs.WriteLine("              match(Tipos." + Contenido + "\");");
+                EscribirConIndentacion("match(Tipos." + Contenido + ");");
                 match(Tipos.Tipo);
             }
             else if (Clasificacion == Tipos.Izquierdo)
             {
                 match(Tipos.Izquierdo);
-                lenguajecs.Write("              if(");
+                lenguajecs.Write(ObtenerIndentacion()+"if(");
 
                 if (Clasificacion == Tipos.ST)
                 {
                     lenguajecs.WriteLine("Contenido == \"" + Contenido + "\")");
-                    lenguajecs.WriteLine("              {");
-                    lenguajecs.WriteLine("                  match(\"" + Contenido + "\");");
+                    AbrirLlave();
+                    EscribirConIndentacion("match(\"" + Contenido + "\");");
                     match(Tipos.ST);
                 }
                 else if (Clasificacion == Tipos.Tipo)
                 {
                     lenguajecs.WriteLine("Clasificacion == Tipos." + Contenido + "\")");
-                    lenguajecs.WriteLine("              {");
-                    lenguajecs.WriteLine("                  match(Tipos." + Contenido + "\");");
+                    AbrirLlave();
+                    EscribirConIndentacion("match(Tipos." + Contenido + ");");
                     match(Tipos.Tipo);
                 }
                 else if (Clasificacion == Tipos.SNT)
@@ -168,7 +192,7 @@ namespace Compilador
                     }
                 }
                 produccionParentesis();
-                lenguajecs.WriteLine("              }");
+                CerrarLlave();
             }
             if (Clasificacion != Tipos.FinProduccion)
             {
@@ -178,6 +202,7 @@ namespace Compilador
 
         private void listaElementos()
         {
+            Console.WriteLine("Entrando a lista Elementos");
             listaParentesis.Add(Contenido);
             if (Clasificacion == Tipos.SNT)
             {
@@ -195,10 +220,15 @@ namespace Compilador
             {
                 match(Tipos.Or);
             }
+            else{
+                Console.WriteLine("Clasificacion no esperada");
+                return;
+            }
             if (Clasificacion != Tipos.Derecho)
             {
                 listaElementos();
             }
+            Console.WriteLine("Saliendo de listaElementos");
         }
 
         private void epsilonSNT()
@@ -213,14 +243,14 @@ namespace Compilador
                 else if (p.getPrimerClasificacion() == Tipos.ST)
                 {
                     lenguajecs.WriteLine("Contenido == \"" + p.getPrimerElemento() + "\")");
-                    lenguajecs.WriteLine("              {");
-                    lenguajecs.WriteLine("                  match(\"" + p.getPrimerElemento() + "\");");
+                    AbrirLlave();
+                    EscribirConIndentacion("match(\"" + p.getPrimerElemento() + "\");");
                 }
                 else if (p.getPrimerClasificacion() == Tipos.Tipo)
                 {
                     lenguajecs.WriteLine("Clasificacion == Tipos." + p.getPrimerElemento() + ")");
-                    lenguajecs.WriteLine("              {");
-                    lenguajecs.WriteLine("                  match(Tipos." + p.getPrimerElemento() + "\");");
+                    AbrirLlave();
+                    EscribirConIndentacion("match(Tipos." + p.getPrimerElemento() + "\");");
                 }
                 match(Tipos.SNT);
             }
@@ -301,40 +331,40 @@ namespace Compilador
                     if (anteOR)
                     {
                         lenguajecs.WriteLine("Contenido == \"" + listaParentesis[i] + "\")");
-                        lenguajecs.WriteLine("              {");
+                        AbrirLlave();
                         anteOR = false;
                     }
-                    lenguajecs.WriteLine("                  match(\"" + listaParentesis[i] + "\");");
+                    EscribirConIndentacion("match(\"" + listaParentesis[i] + "\");");
                 }
                 else if (tipoLista == Tipos.Tipo)
                 {
                     if (anteOR)
                     {
                         lenguajecs.WriteLine("Clasificacion == Tipos." + listaParentesis[i] + ")");
-                        lenguajecs.WriteLine("              {");
+                        AbrirLlave();
                         anteOR = false;
                     }
-                    lenguajecs.WriteLine("                  match(Tipos." + listaParentesis[i] + "\");");
+                    EscribirConIndentacion("match(Tipos." + listaParentesis[i] + "\");");
                 }
                 else if (listaParentesis[i] == "|")
                 {
-                    lenguajecs.WriteLine("              }");
+                    CerrarLlave(); 
                     if (listaParentesis[i + 1] == listaParentesis.Last())
                     {
                         if (hayEpsilon)
                         {
-                            lenguajecs.Write("              else if(");
+                            lenguajecs.Write(ObtenerIndentacion()+"else if(");
                             anteOR = true;
                         }
                         else
                         {
-                            lenguajecs.WriteLine("              else{");
+                            EscribirConIndentacion("else{");
                             anteOR = false;
                         }
                     }
                     else
                     {
-                        lenguajecs.Write("              else if(");
+                        lenguajecs.Write(ObtenerIndentacion()+"else if(");
                         anteOR = true;
                     }
 

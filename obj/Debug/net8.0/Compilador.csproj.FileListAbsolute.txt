@@ -13,3 +13,18 @@ C:\Users\mokka\OneDrive\Imágenes\Universidad\Quinto semestre\LyAII\proyectos\Co
 C:\Users\mokka\OneDrive\Imágenes\Universidad\Quinto semestre\LyAII\proyectos\Compilador\Compilador\obj\Debug\net8.0\Compilador.pdb
 C:\Users\mokka\OneDrive\Imágenes\Universidad\Quinto semestre\LyAII\proyectos\Compilador\Compilador\obj\Debug\net8.0\Compilador.genruntimeconfig.cache
 C:\Users\mokka\OneDrive\Imágenes\Universidad\Quinto semestre\LyAII\proyectos\Compilador\Compilador\obj\Debug\net8.0\ref\Compilador.dll
+C:\Users\beren\Documents\ITQ\Semestre 7\2.Lenguajes y Autómatas II - Guillermo Fernandez Romero\Compilador\bin\Debug\net8.0\Compilador.exe
+C:\Users\beren\Documents\ITQ\Semestre 7\2.Lenguajes y Autómatas II - Guillermo Fernandez Romero\Compilador\bin\Debug\net8.0\Compilador.deps.json
+C:\Users\beren\Documents\ITQ\Semestre 7\2.Lenguajes y Autómatas II - Guillermo Fernandez Romero\Compilador\bin\Debug\net8.0\Compilador.runtimeconfig.json
+C:\Users\beren\Documents\ITQ\Semestre 7\2.Lenguajes y Autómatas II - Guillermo Fernandez Romero\Compilador\bin\Debug\net8.0\Compilador.dll
+C:\Users\beren\Documents\ITQ\Semestre 7\2.Lenguajes y Autómatas II - Guillermo Fernandez Romero\Compilador\bin\Debug\net8.0\Compilador.pdb
+C:\Users\beren\Documents\ITQ\Semestre 7\2.Lenguajes y Autómatas II - Guillermo Fernandez Romero\Compilador\obj\Debug\net8.0\Compilador.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\beren\Documents\ITQ\Semestre 7\2.Lenguajes y Autómatas II - Guillermo Fernandez Romero\Compilador\obj\Debug\net8.0\Compilador.AssemblyInfoInputs.cache
+C:\Users\beren\Documents\ITQ\Semestre 7\2.Lenguajes y Autómatas II - Guillermo Fernandez Romero\Compilador\obj\Debug\net8.0\Compilador.AssemblyInfo.cs
+C:\Users\beren\Documents\ITQ\Semestre 7\2.Lenguajes y Autómatas II - Guillermo Fernandez Romero\Compilador\obj\Debug\net8.0\Compilador.csproj.CoreCompileInputs.cache
+C:\Users\beren\Documents\ITQ\Semestre 7\2.Lenguajes y Autómatas II - Guillermo Fernandez Romero\Compilador\obj\Debug\net8.0\Compilador.sourcelink.json
+C:\Users\beren\Documents\ITQ\Semestre 7\2.Lenguajes y Autómatas II - Guillermo Fernandez Romero\Compilador\obj\Debug\net8.0\Compilador.dll
+C:\Users\beren\Documents\ITQ\Semestre 7\2.Lenguajes y Autómatas II - Guillermo Fernandez Romero\Compilador\obj\Debug\net8.0\refint\Compilador.dll
+C:\Users\beren\Documents\ITQ\Semestre 7\2.Lenguajes y Autómatas II - Guillermo Fernandez Romero\Compilador\obj\Debug\net8.0\Compilador.pdb
+C:\Users\beren\Documents\ITQ\Semestre 7\2.Lenguajes y Autómatas II - Guillermo Fernandez Romero\Compilador\obj\Debug\net8.0\Compilador.genruntimeconfig.cache
+C:\Users\beren\Documents\ITQ\Semestre 7\2.Lenguajes y Autómatas II - Guillermo Fernandez Romero\Compilador\obj\Debug\net8.0\ref\Compilador.dll
