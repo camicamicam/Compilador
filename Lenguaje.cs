@@ -250,7 +250,7 @@ namespace Compilador
                 {
                     lenguajecs.WriteLine("Contenido == \"" + p.getPrimerElemento() + "\")");
                     AbrirLlave();
-                    if (produccionR != "")
+                    if (pRecursivo != "")
                     {
                         EscribirConIndentacion(produccionR+"();");
                         contadorR = 0;
@@ -264,7 +264,7 @@ namespace Compilador
                 {
                     lenguajecs.WriteLine("Clasificacion == Tipos." + p.getPrimerElemento() + ")");
                     AbrirLlave();
-                    if (produccionR != "")
+                    if (pRecursivo != "")
                     {
                         EscribirConIndentacion(produccionR+"();");
                         contadorR = 0;

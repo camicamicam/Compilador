@@ -34,12 +34,16 @@ namespace Lenguaje
             }
             D();
         }
+        private void D()
+        {
+            match("e");
+        }
         private void C()
         {
             D();
-            if(Contenido == "a")
+            if(Contenido == "e")
             {
-                match("a");
+                A();
             }
             else if(Contenido == "b")
             {
@@ -49,9 +53,6 @@ namespace Lenguaje
             {
                 D();
             }
-        }
-        private void D()
-        {
         }
     }
 }
