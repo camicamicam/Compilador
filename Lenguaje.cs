@@ -92,7 +92,7 @@ namespace Compilador
             int cTemp = caracter - Contenido.Length - 2;
             int lTemp = linea;
             registroP();
-            ImprimirProducciones();
+            //ImprimirProducciones();
             caracter = cTemp;
             linea = lTemp;
             archivo.DiscardBufferedData();
