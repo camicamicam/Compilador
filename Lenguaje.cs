@@ -88,15 +88,52 @@ namespace Compilador
             esqueleto(Contenido);
             match(Tipos.SNT);
             match(";");
+
+            int cTemp = caracter - Contenido.Length - 2;
+            int lTemp = linea;
+            registroP();
+            //ImprimirProducciones();
+            caracter = cTemp;
+            linea = lTemp;
+            archivo.DiscardBufferedData();
+            archivo.BaseStream.Seek(cTemp, SeekOrigin.Begin);
+            nextToken();
             producciones();
 
             CerrarLlave();
             CerrarLlave();
         }
+        private void registroP()
+        {
+            
+            string NombreProduccion;
+            NombreProduccion = Contenido;
+            match(Tipos.SNT);
+            match(Tipos.Flecha);
+            string primerElemento = Contenido;
+            Tipos tipoPE = buscarTipo(Contenido);
+            listaProducciones.Add(new Producciones(NombreProduccion, primerElemento, tipoPE));
+            while (Clasificacion != Tipos.FinProduccion)
+            {
+                nextToken();
+            }
+            match(Tipos.FinProduccion);
+            if (Clasificacion == Tipos.SNT)
+            {
+                registroP();
+            }
+        }
+
+        private void ImprimirProducciones()
+        {
+            foreach (var item in listaProducciones)
+            {
+                Console.WriteLine(item.getNombre() + " : " + item.getPrimerElemento()+ " "+ item.getPrimerClasificacion());
+            }
+        }
 
         private void producciones()
         {
-            string NombreProduccion;
             if (Clasificacion == Tipos.SNT)
             {
                 if (primeraProduccion)
@@ -111,13 +148,8 @@ namespace Compilador
                 AbrirLlave();
 
             }
-            NombreProduccion = Contenido;
             match(Tipos.SNT);
             match(Tipos.Flecha);
-
-            string primerElemento = Contenido;
-            Tipos tipoPE = buscarTipo(Contenido);
-            listaProducciones.Add(new Producciones(NombreProduccion, primerElemento, tipoPE));
 
             conjuntoTokens();
             match(Tipos.FinProduccion);
@@ -278,6 +310,10 @@ namespace Compilador
                 {
                     contadorR++;
                     epsilonSNT(p.getPrimerElemento(),contenido);
+                }
+                else if (p.getPrimerClasificacion() == Tipos.FinProduccion)
+                {
+                    throw new Error("No hay contenido en la produccion "+contenido,log);
                 }       
             }
             else
@@ -294,6 +330,10 @@ namespace Compilador
             {
                 tipo = Tipos.Tipo;
             }
+            else if (contenido == "\\;")
+            {
+                tipo = Tipos.FinProduccion;
+            }
             else if (contenido == "|")
             {
                 tipo = Tipos.Or;
@@ -302,7 +342,7 @@ namespace Compilador
             {
                 tipo = Tipos.ST;
             }
-            else if(EsST(Contenido))
+            else if(EsST(contenido))
             {
                 tipo = Tipos.ST;
             }
@@ -347,6 +387,11 @@ namespace Compilador
                 case "$":
                 case "%":
                 case "&":
+                case "*":
+                case "+":
+                case "-":
+                case "=":
+                case ";":
                 case "/": return true;
             }
             return false;
@@ -364,6 +409,7 @@ namespace Compilador
                     if (anteOR)
                     {
                        epsilonSNT(listaParentesis[i],"");
+                       anteOR = false;
                     }
                     else
                     {
@@ -393,7 +439,7 @@ namespace Compilador
                 else if (listaParentesis[i] == "|")
                 {
                     CerrarLlave(); 
-                    if (listaParentesis[i + 1] == listaParentesis.Last())
+                    if (i == listaParentesis.LastIndexOf("|") )
                     {
                         if (hayEpsilon)
                         {

@@ -1,5 +1,5 @@
 namespace: Lenguaje;
 Programa -> A b C \;
 A -> C \( Numero b C D \)\? D \;
-C -> D \(  A | b | D \) \;
+C -> D \(  a | s b d | D c d \) \;
 D -> \;

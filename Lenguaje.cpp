@@ -34,25 +34,17 @@ namespace Lenguaje
             }
             D();
         }
-        private void D()
-        {
-            match("e");
-        }
         private void C()
         {
             D();
-            if(Contenido == "e")
+            if(Contenido == "a")
             {
-                A();
+                match("a");
             }
-            else if(Contenido == "b")
+            else if(Contenido == "s")
             {
+                match("s");
                 match("b");
+                match("d");
             }
-            else
-            {
-                D();
-            }
-        }
-    }
-}
+            else if(
