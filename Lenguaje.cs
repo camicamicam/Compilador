@@ -92,7 +92,7 @@ namespace Compilador
             int cTemp = caracter - Contenido.Length - 2;
             int lTemp = linea;
             registroP();
-            //ImprimirProducciones();
+            ImprimirProducciones();
             caracter = cTemp;
             linea = lTemp;
             archivo.DiscardBufferedData();
@@ -164,8 +164,17 @@ namespace Compilador
         {
             if (Clasificacion == Tipos.SNT)
             {
-                EscribirConIndentacion(Contenido + "();");
-                match(Tipos.SNT);
+                var p = listaProducciones.Find(p => p.getNombre() == Contenido);
+                if (p != null)
+                {
+                    EscribirConIndentacion(Contenido + "();");
+                    match(Tipos.SNT);
+                }
+                else
+                {
+                    throw new Error("No se declaro la produccion "+Contenido+" ", log, linea-1);
+                }
+                
             }
             else if (Clasificacion == Tipos.ST)
             {
@@ -318,7 +327,7 @@ namespace Compilador
             }
             else
             {
-                throw new Error("No se declaro o aun no se ha declarado la produccion "+contenido+" ", log, linea);
+                throw new Error("No se declaro la produccion "+contenido+" ", log, linea);
             }
             
         }
@@ -413,7 +422,15 @@ namespace Compilador
                     }
                     else
                     {
-                       EscribirConIndentacion(listaParentesis[i] + "();"); 
+                        var p = listaProducciones.Find(p => p.getNombre() == listaParentesis[i]);
+                        if (p != null)
+                        {
+                            EscribirConIndentacion(listaParentesis[i] + "();"); 
+                        }
+                        else
+                        {
+                            throw new Error("No se declaro la produccion " + listaParentesis[i], log);
+                        }
                     }
                 }
                 else if (tipoLista == Tipos.ST)
